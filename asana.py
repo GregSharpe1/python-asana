@@ -5,11 +5,15 @@ import json
 import requests
 import os
 
+config_file = "config"
+execfile("export")
 
 class Asana:
     """Handle all of the Asana interactions"""
     base_url = "https://app.asana.com/api/1.0/"
     # Pull the export env variable and set equal to the api_key
+
+    # TODO: Error checking around the export
     api_key = "Bearer " + os.environ['ASANA_ACCESS_TOKEN']
 
     def get_workspaces(self):
@@ -41,7 +45,7 @@ class Asana:
             if search_term == term['name']:
                 return term['id']
             else:
-                return "No matches found! Please try again"
+                return "No matches found! Please try again. Is {} what you're looking for?".format(search_term)
 
     def get_all_tasks_within_project(self, project_id):
         """Return a json object with all tasks"""
